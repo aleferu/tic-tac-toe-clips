@@ -141,7 +141,7 @@ def pregunta_quien_empieza():
 
 def empezar_partida():
     # Bienvenida
-    print('=========================================')
+    print('\n=========================================')
     print('Empezamos el juego')
     print('Las casillas se indican según coordenadas (x,y)')
     print('La posición superior izquierda es (0,0)')
@@ -153,9 +153,9 @@ def empezar_partida():
     tablero = np.zeros(9, dtype=int).reshape(3, 3) # 0 (nada)
                                                    # 1 (cruz)
                                                    # 2 (circulo)
-    tablero = np.array([2, 1, 0, 
-                        0, 0, 1, 
-                        0, 0, 0]).reshape(3, 3)
+    # tablero = np.array([0, 0, 0, 
+    #                     0, 0, 1, 
+    #                     1, 0, 0]).reshape(3, 3)
     num_tiradas = 0
     partida_en_juego = True
     print(f'\nTablero inicial:')
@@ -196,7 +196,8 @@ def empezar_partida():
         # Turno del otro
         turno_de = 'máquina' if turno_de == 'usuario' else 'usuario'
 
-    empezar_partida()
+    if pregunta_otra_partida():
+        empezar_partida()
 
 
 if __name__ == '__main__':

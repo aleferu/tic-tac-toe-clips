@@ -1,5 +1,5 @@
 custom_rules = {
-
+ 
 # Si puede ganar, gana
 
 """
@@ -199,6 +199,7 @@ custom_rules = {
     (not (casilla_elegida ?))
     (not (amenaza_multiple ?))
     (not (estudiando_amenazas_derrota ?))
+    (not (centro_cogida))
     =>
     (assert (amenaza_multiple sí))
     (printout t "hay_amenaza_multiple" crlf))
@@ -220,8 +221,8 @@ custom_rules = {
     =>
     (assert (estudiado_amenaza_usuario ?c1 ?c2 ?c3))
     (assert (estudiando_amenazas_derrota sí))
-    (modify ?c2 (elegida (+ 1 ?e2)))
-    (modify ?c3 (elegida (+ 1 ?e3)))
+    (if (= ?y 1) then (modify ?c2 (elegida (+ 2 ?e2))) else (modify ?c2 (elegida (+ 1 ?e2))))
+    (if (= ?z 1) then (modify ?c3 (elegida (+ 2 ?e3))) else (modify ?c3 (elegida (+ 1 ?e2))))
     (printout t "evitar_amenaza_derrota_diagonal" crlf))
 """,
 """
@@ -244,9 +245,9 @@ custom_rules = {
     =>
     (assert (estudiado_amenaza_usuario ?c1 ?c2 ?c3))
     (assert (estudiando_amenazas_derrota sí))
-    (if (= ?x 2) then (modify ?c2 (elegida (+ 1 ?e2))) (modify ?c3 (elegida (+ 1 ?e3))))
-    (if (= ?y 2) then (modify ?c1 (elegida (+ 1 ?e1))) (modify ?c3 (elegida (+ 1 ?e3))))
-    (if (= ?z 2) then (modify ?c1 (elegida (+ 1 ?e1))) (modify ?c2 (elegida (+ 1 ?e2))))
+    (if (= ?x 1) then (modify ?c2 (elegida (+ 2 ?e2))) (modify ?c3 (elegida (+ 1 ?e3))))
+    (if (= ?y 1) then (modify ?c1 (elegida (+ 1 ?e1))) (modify ?c3 (elegida (+ 1 ?e3))))
+    (if (= ?z 1) then (modify ?c1 (elegida (+ 1 ?e1))) (modify ?c2 (elegida (+ 2 ?e2))))
     (printout t "evitar_amenaza_derrota_otra_diagonal" crlf))
 """,
 """
@@ -293,6 +294,7 @@ custom_rules = {
     (not (casilla_elegida ?))
     (not (amenaza_multiple ?))
     (not (se_evita_amenaza_multiple ?))
+    (not (centro_cogida ?))
     (estudiando_amenazas_derrota sí)
     =>
     (assert (se_evita_amenaza_multiple sí))
@@ -307,9 +309,11 @@ custom_rules = {
     ?c <- (casilla (tipo 0))
     (not (casilla_elegida ?))
     (not (amenaza_multiple ?))
-    (not (se_evita_amenaza_multiple ?))
+    (not (centro_cogida ?))
+    (not (estudiando_amenazas_derrota ?))
     =>
+    (modify ?c (elegida 1))
     (assert (casilla_elegida sí))
-    (modify ?c (elegida 1)))
+    (printout t "cualquier_casilla_libre" crlf))
 """
 }
