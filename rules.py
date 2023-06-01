@@ -1,319 +1,319 @@
 custom_rules = {
  
-# Si puede ganar, gana
+# If the agent can win, it'll win
 
 """
-(defrule posible_victoria_diagonal
+(defrule diagonal_victory
     (declare (salience 10))
-    (casilla (coord_x ?x) (coord_y ?x) (tipo 2))
-    (casilla (coord_x ?y) (coord_y ?y) (tipo 2))
-    ?c <- (casilla (coord_x ?z) (coord_y ?z) (tipo 0))
+    (square (coord_x ?x) (coord_y ?x) (type 2))
+    (square (coord_x ?y) (coord_y ?y) (type 2))
+    ?c <- (square (coord_x ?z) (coord_y ?z) (type 0))
     (test (not (= ?y ?x)))
-    (not (casilla_elegida ?))
+    (not (square_chosen ?))
     =>
-    (assert (casilla_elegida sí))
-    (modify ?c (elegida 1))
-    (printout t "posible_victoria_diagonal" crlf))
+    (assert (square_chosen yes))
+    (modify ?c (chosen 1))
+    (assert (diagonal_victory activated)))
 """,
 """
-(defrule posible_victoria_otra_diagonal
+(defrule other_diagonal_victory
     (declare (salience 10))
-    ?c1 <- (casilla (coord_x 0) (coord_y 2) (tipo ?x))
-    ?c2 <- (casilla (coord_x 1) (coord_y 1) (tipo ?y))
-    ?c3 <- (casilla (coord_x 2) (coord_y 0) (tipo ?z))
+    ?c1 <- (square (coord_x 0) (coord_y 2) (type ?x))
+    ?c2 <- (square (coord_x 1) (coord_y 1) (type ?y))
+    ?c3 <- (square (coord_x 2) (coord_y 0) (type ?z))
     (test (or (and (= ?x 0) (= ?y 2) (= ?z 2))
               (and (= ?x 2) (= ?y 0) (= ?z 2))
               (and (= ?x 2) (= ?y 2) (= ?z 0))))
-    (not (casilla_elegida ?))
+    (not (square_chosen ?))
     =>
-    (assert (casilla_elegida sí))
-    (if (= ?x 0) then (modify ?c1 (elegida 1)))
-    (if (= ?y 0) then (modify ?c2 (elegida 1)))
-    (if (= ?z 0) then (modify ?c3 (elegida 1)))
-    (printout t "posible_victoria_otra_diagonal" crlf))
+    (assert (square_chosen yes))
+    (if (= ?x 0) then (modify ?c1 (chosen 1)))
+    (if (= ?y 0) then (modify ?c2 (chosen 1)))
+    (if (= ?z 0) then (modify ?c3 (chosen 1)))
+    (assert (other_diagonal_victory activated)))
 """,
 """
-(defrule posible_victoria_horizontal
+(defrule row_victory
     (declare (salience 10))
-    (casilla (coord_x ?x) (coord_y ?y1) (tipo 2))
-    (casilla (coord_x ?x) (coord_y ?y2) (tipo 2))
-    ?c <- (casilla (coord_x ?x) (coord_y ?y3) (tipo 0))
+    (square (coord_x ?x) (coord_y ?y1) (type 2))
+    (square (coord_x ?x) (coord_y ?y2) (type 2))
+    ?c <- (square (coord_x ?x) (coord_y ?y3) (type 0))
     (test (not (= ?y1 ?y2)))
-    (not (casilla_elegida ?))
+    (not (square_chosen ?))
     =>
-    (assert (casilla_elegida sí))
-    (modify ?c (elegida 1))
-    (printout t "posible_victoria_horizontal" crlf))
+    (assert (square_chosen yes))
+    (modify ?c (chosen 1))
+    (assert (row_victory activated)))
 """,
 """
-(defrule posible_victoria_vertical
+(defrule column_victory
     (declare (salience 10))
-    (casilla (coord_x ?x1) (coord_y ?y) (tipo 2))
-    (casilla (coord_x ?x2) (coord_y ?y) (tipo 2))
-    ?c <- (casilla (coord_x ?x3) (coord_y ?y) (tipo 0))
+    (square (coord_x ?x1) (coord_y ?y) (type 2))
+    (square (coord_x ?x2) (coord_y ?y) (type 2))
+    ?c <- (square (coord_x ?x3) (coord_y ?y) (type 0))
     (test (not (= ?x1 ?x2)))
-    (not (casilla_elegida ?))
+    (not (square_chosen ?))
     =>
-    (assert (casilla_elegida sí))
-    (modify ?c (elegida 1))
-    (printout t "posible_victoria_vertical" crlf))
+    (assert (square_chosen yes))
+    (modify ?c (chosen 1))
+    (assert (column_victory activated)))
 """,
 
-# Si va a perder, lo evita
+# If the agent will lose, it'll prevent it
 
 """
-(defrule posible_derrota_diagonal
+(defrule diagonal_prevent_defeat
     (declare (salience 9))
-    (casilla (coord_x ?x) (coord_y ?x) (tipo 1))
-    (casilla (coord_x ?y) (coord_y ?y) (tipo 1))
-    ?c <- (casilla (coord_x ?z) (coord_y ?z) (tipo 0))
+    (square (coord_x ?x) (coord_y ?x) (type 1))
+    (square (coord_x ?y) (coord_y ?y) (type 1))
+    ?c <- (square (coord_x ?z) (coord_y ?z) (type 0))
     (test (not (= ?y ?x)))
-    (not (casilla_elegida ?))
+    (not (square_chosen ?))
     =>
-    (assert (casilla_elegida sí))
-    (modify ?c (elegida 1))
-    (printout t "posible_derrota_diagonal" crlf))
+    (assert (square_chosen yes))
+    (modify ?c (chosen 1))
+    (assert (diagonal_prevent_defeat activated)))
 """,
 """
-(defrule posible_derrota_otra_diagonal
+(defrule other_diagonal_prevent_defeat
     (declare (salience 9))
-    ?c1 <- (casilla (coord_x 0) (coord_y 2) (tipo ?x))
-    ?c2 <- (casilla (coord_x 1) (coord_y 1) (tipo ?y))
-    ?c3 <- (casilla (coord_x 2) (coord_y 0) (tipo ?z))
+    ?c1 <- (square (coord_x 0) (coord_y 2) (type ?x))
+    ?c2 <- (square (coord_x 1) (coord_y 1) (type ?y))
+    ?c3 <- (square (coord_x 2) (coord_y 0) (type ?z))
     (test (or (and (= ?x 0) (= ?y 1) (= ?z 1))
               (and (= ?x 1) (= ?y 0) (= ?z 1))
               (and (= ?x 1) (= ?y 1) (= ?z 0))))
-    (not (casilla_elegida ?))
+    (not (square_chosen ?))
     =>
-    (assert (casilla_elegida sí))
-    (if (= ?x 0) then (modify ?c1 (elegida 1)))
-    (if (= ?y 0) then (modify ?c2 (elegida 1)))
-    (if (= ?z 0) then (modify ?c3 (elegida 1)))
-    (printout t "posible_derrota_otra_diagonal" crlf))
+    (assert (square_chosen yes))
+    (if (= ?x 0) then (modify ?c1 (chosen 1)))
+    (if (= ?y 0) then (modify ?c2 (chosen 1)))
+    (if (= ?z 0) then (modify ?c3 (chosen 1)))
+    (assert (other_diagonal_prevent_defeat activated)))
 """,
 """
-(defrule posible_derrota_horizontal
+(defrule row_prevent_defeat
     (declare (salience 9))
-    (casilla (coord_x ?x) (coord_y ?y1) (tipo 1))
-    (casilla (coord_x ?x) (coord_y ?y2) (tipo 1))
-    ?c <- (casilla (coord_x ?x) (coord_y ?y3) (tipo 0))
+    (square (coord_x ?x) (coord_y ?y1) (type 1))
+    (square (coord_x ?x) (coord_y ?y2) (type 1))
+    ?c <- (square (coord_x ?x) (coord_y ?y3) (type 0))
     (test (not (= ?y1 ?y2)))
-    (not (casilla_elegida ?))
+    (not (square_chosen ?))
     =>
-    (assert (casilla_elegida sí))
-    (modify ?c (elegida 1))
-    (printout t "posible_derrota_horizontal" crlf))
+    (assert (square_chosen yes))
+    (modify ?c (chosen 1))
+    (assert (row_prevent_defeat activated)))
 """,
 """
-(defrule posible_derrota_vertical
+(defrule column_prevent_defeat
     (declare (salience 9))
-    (casilla (coord_x ?x1) (coord_y ?y) (tipo 1))
-    (casilla (coord_x ?x2) (coord_y ?y) (tipo 1))
-    ?c <- (casilla (coord_x ?x3) (coord_y ?y) (tipo 0))
+    (square (coord_x ?x1) (coord_y ?y) (type 1))
+    (square (coord_x ?x2) (coord_y ?y) (type 1))
+    ?c <- (square (coord_x ?x3) (coord_y ?y) (type 0))
     (test (not (= ?x1 ?x2)))
-    (not (casilla_elegida ?))
+    (not (square_chosen ?))
     =>
-    (assert (casilla_elegida sí))
-    (modify ?c (elegida 1))
-    (printout t "posible_derrota_vertical" crlf))
+    (assert (square_chosen yes))
+    (modify ?c (chosen 1))
+    (assert (column_prevent_defeat activated)))
 """,
 
-# Amenazar victoria
+# The agent threatens the maximum number of wins possible
 
 """
-(defrule amenazar_victoria_diagonal
+(defrule diagonal_threaten_win
     (declare (salience 7))
-    ?c1 <- (casilla (coord_x ?x) (coord_y ?x) (tipo 2))
-    ?c2 <- (casilla (coord_x ?y) (coord_y ?y) (tipo 0) (elegida ?e2))
-    ?c3 <- (casilla (coord_x ?z) (coord_y ?z) (tipo 0) (elegida ?e3))
+    ?c1 <- (square (coord_x ?x) (coord_y ?x) (type 2))
+    ?c2 <- (square (coord_x ?y) (coord_y ?y) (type 0) (chosen ?e2))
+    ?c3 <- (square (coord_x ?z) (coord_y ?z) (type 0) (chosen ?e3))
     (test (not (= ?y ?z)))
-    (not (casilla_elegida ?))
-    (not (estudiado_amenaza_maquina ?c1 ?c2 ?c3))
-    (not (estudiado_amenaza_maquina ?c1 ?c3 ?c2))
+    (not (square_chosen ?))
+    (not (agent_threat_studied ?c1 ?c2 ?c3))
+    (not (agent_threat_studied ?c1 ?c3 ?c2))
     =>
-    (assert (estudiado_amenaza_maquina ?c1 ?c2 ?c3))
-    (modify ?c2 (elegida (+ 1 ?e2)))
-    (modify ?c3 (elegida (+ 1 ?e3)))
-    (printout t "amenazar_victoria_diagonal" crlf))
+    (assert (agent_threat_studied ?c1 ?c2 ?c3))
+    (modify ?c2 (chosen (+ 1 ?e2)))
+    (modify ?c3 (chosen (+ 1 ?e3)))
+    (assert (diagonal_threaten_win activated)))
 """,
 """
-(defrule amenazar_victoria_otra_diagonal
+(defrule other_diagonal_threaten_win
     (declare (salience 7))
-    ?c1 <- (casilla (coord_x 0) (coord_y 2) (tipo ?x) (elegida ?e1))
-    ?c2 <- (casilla (coord_x 1) (coord_y 1) (tipo ?y) (elegida ?e2))
-    ?c3 <- (casilla (coord_x 2) (coord_y 0) (tipo ?z) (elegida ?e3))
+    ?c1 <- (square (coord_x 0) (coord_y 2) (type ?x) (chosen ?e1))
+    ?c2 <- (square (coord_x 1) (coord_y 1) (type ?y) (chosen ?e2))
+    ?c3 <- (square (coord_x 2) (coord_y 0) (type ?z) (chosen ?e3))
     (test (or (and (= ?x 0) (= ?y 0) (= ?z 2))
               (and (= ?x 0) (= ?y 2) (= ?z 0))
               (and (= ?x 2) (= ?y 0) (= ?z 0))))
-    (not (casilla_elegida ?))
-    (not (estudiado_amenaza_maquina ?c1 ?c2 ?c3))
-    (not (estudiado_amenaza_maquina ?c1 ?c3 ?c2))
-    (not (estudiado_amenaza_maquina ?c2 ?c3 ?c1))
-    (not (estudiado_amenaza_maquina ?c2 ?c1 ?c3))
-    (not (estudiado_amenaza_maquina ?c3 ?c2 ?c1))
-    (not (estudiado_amenaza_maquina ?c3 ?c1 ?c2))
+    (not (square_chosen ?))
+    (not (agent_threat_studied ?c1 ?c2 ?c3))
+    (not (agent_threat_studied ?c1 ?c3 ?c2))
+    (not (agent_threat_studied ?c2 ?c3 ?c1))
+    (not (agent_threat_studied ?c2 ?c1 ?c3))
+    (not (agent_threat_studied ?c3 ?c2 ?c1))
+    (not (agent_threat_studied ?c3 ?c1 ?c2))
     =>
-    (assert (estudiado_amenaza_maquina ?c1 ?c2 ?c3))
-    (if (= ?x 2) then (modify ?c2 (elegida (+ 1 ?e2))) (modify ?c3 (elegida (+ 1 ?e3))))
-    (if (= ?y 2) then (modify ?c1 (elegida (+ 1 ?e1))) (modify ?c3 (elegida (+ 1 ?e3))))
-    (if (= ?z 2) then (modify ?c1 (elegida (+ 1 ?e1))) (modify ?c2 (elegida (+ 1 ?e2))))
-    (printout t "amenazar_victoria_otra_diagonal" crlf))
+    (assert (agent_threat_studied ?c1 ?c2 ?c3))
+    (if (= ?x 2) then (modify ?c2 (chosen (+ 1 ?e2))) (modify ?c3 (chosen (+ 1 ?e3))))
+    (if (= ?y 2) then (modify ?c1 (chosen (+ 1 ?e1))) (modify ?c3 (chosen (+ 1 ?e3))))
+    (if (= ?z 2) then (modify ?c1 (chosen (+ 1 ?e1))) (modify ?c2 (chosen (+ 1 ?e2))))
+    (assert (other_diagonal_threaten_win activated)))
 """,
 """
-(defrule amenazar_victoria_horizontal
+(defrule row_threaten_win
     (declare (salience 7))
-    ?c1 <- (casilla (coord_x ?x) (coord_y ?y1) (tipo 2))
-    ?c2 <- (casilla (coord_x ?x) (coord_y ?y2) (tipo 0) (elegida ?e2))
-    ?c3 <- (casilla (coord_x ?x) (coord_y ?y3) (tipo 0) (elegida ?e3))
+    ?c1 <- (square (coord_x ?x) (coord_y ?y1) (type 2))
+    ?c2 <- (square (coord_x ?x) (coord_y ?y2) (type 0) (chosen ?e2))
+    ?c3 <- (square (coord_x ?x) (coord_y ?y3) (type 0) (chosen ?e3))
     (test (not (= ?y2 ?y3)))
-    (not (casilla_elegida ?))
-    (not (estudiado_amenaza_maquina ?c1 ?c2 ?c3))
-    (not (estudiado_amenaza_maquina ?c1 ?c3 ?c2))
+    (not (square_chosen ?))
+    (not (agent_threat_studied ?c1 ?c2 ?c3))
+    (not (agent_threat_studied ?c1 ?c3 ?c2))
     =>
-    (assert (estudiado_amenaza_maquina ?c1 ?c2 ?c3))
-    (modify ?c2 (elegida (+ 1 ?e2)))
-    (modify ?c3 (elegida (+ 1 ?e3)))
-    (printout t "amenazar_victoria_horizontal" crlf))
+    (assert (agent_threat_studied ?c1 ?c2 ?c3))
+    (modify ?c2 (chosen (+ 1 ?e2)))
+    (modify ?c3 (chosen (+ 1 ?e3)))
+    (assert (row_threaten_win activated)))
 """,
 """
-(defrule amenazar_victoria_vertical
+(defrule column_threaten_win
     (declare (salience 7))
-    ?c1 <- (casilla (coord_x ?x1) (coord_y ?y) (tipo 2))
-    ?c2 <- (casilla (coord_x ?x2) (coord_y ?y) (tipo 0) (elegida ?e2))
-    ?c3 <- (casilla (coord_x ?x3) (coord_y ?y) (tipo 0) (elegida ?e3))
+    ?c1 <- (square (coord_x ?x1) (coord_y ?y) (type 2))
+    ?c2 <- (square (coord_x ?x2) (coord_y ?y) (type 0) (chosen ?e2))
+    ?c3 <- (square (coord_x ?x3) (coord_y ?y) (type 0) (chosen ?e3))
     (test (not (= ?x2 ?x3)))
-    (not (casilla_elegida ?))
-    (not (estudiado_amenaza_maquina ?c1 ?c2 ?c3))
-    (not (estudiado_amenaza_maquina ?c1 ?c3 ?c2))
+    (not (square_chosen ?))
+    (not (agent_threat_studied ?c1 ?c2 ?c3))
+    (not (agent_threat_studied ?c1 ?c3 ?c2))
     =>
-    (assert (estudiado_amenaza_maquina ?c1 ?c2 ?c3))
-    (modify ?c2 (elegida (+ 1 ?e2)))
-    (modify ?c3 (elegida (+ 1 ?e3)))
-    (printout t "amenazar_victoria_vertical" crlf))
+    (assert (agent_threat_studied ?c1 ?c2 ?c3))
+    (modify ?c2 (chosen (+ 1 ?e2)))
+    (modify ?c3 (chosen (+ 1 ?e3)))
+    (assert (column_threaten_win activated)))
 """,
 """
-(defrule hay_amenaza_multiple
+(defrule multiple_win_threats
     (declare (salience 6))
-    (casilla (elegida ?e))
+    (square (chosen ?e))
     (test  (> ?e 0))
-    (not (casilla_elegida ?))
-    (not (amenaza_multiple ?))
-    (not (estudiando_amenazas_derrota ?))
-    (not (centro_cogida))
+    (not (square_chosen ?))
+    (not (agent_multiple_threats_exist ?))
+    (not (user_threat_exists ?))
     =>
-    (assert (amenaza_multiple sí))
-    (printout t "hay_amenaza_multiple" crlf))
+    (assert (agent_multiple_threats_exist yes)))
 """,
 
-# Evitar amenaza múltiple
+# The agent defends the maximum number of loses possible
 
 """
-(defrule evitar_amenaza_derrota_diagonal
+(defrule diagonal_stop_threat_defeat
     (declare (salience 5))
-    ?c1 <- (casilla (coord_x ?x) (coord_y ?x) (tipo 1))
-    ?c2 <- (casilla (coord_x ?y) (coord_y ?y) (tipo 0) (elegida ?e2))
-    ?c3 <- (casilla (coord_x ?z) (coord_y ?z) (tipo 0) (elegida ?e3))
+    ?c1 <- (square (coord_x ?x) (coord_y ?x) (type 1))
+    ?c2 <- (square (coord_x ?y) (coord_y ?y) (type 0) (chosen ?e2))
+    ?c3 <- (square (coord_x ?z) (coord_y ?z) (type 0) (chosen ?e3))
     (test (not (= ?y ?z)))
-    (not (casilla_elegida ?))
-    (not (amenaza_multiple ?))
-    (not (estudiado_amenaza_usuario ?c1 ?c2 ?c3))
-    (not (estudiado_amenaza_usuario ?c1 ?c3 ?c2))
+    (not (square_chosen ?))
+    (not (agent_multiple_threats_exist ?))
+    (not (user_threat_studied ?c1 ?c2 ?c3))
+    (not (user_threat_studied ?c1 ?c3 ?c2))
     =>
-    (assert (estudiado_amenaza_usuario ?c1 ?c2 ?c3))
-    (assert (estudiando_amenazas_derrota sí))
-    (if (= ?y 1) then (modify ?c2 (elegida (+ 2 ?e2))) else (modify ?c2 (elegida (+ 1 ?e2))))
-    (if (= ?z 1) then (modify ?c3 (elegida (+ 2 ?e3))) else (modify ?c3 (elegida (+ 1 ?e2))))
-    (printout t "evitar_amenaza_derrota_diagonal" crlf))
+    (assert (user_threat_studied ?c1 ?c2 ?c3))
+    (assert (user_threat_exists yes))
+    (if (= ?y 1) then (modify ?c2 (chosen (+ 2 ?e2))) else (modify ?c2 (chosen (+ 1 ?e2))))
+    (if (= ?z 1) then (modify ?c3 (chosen (+ 2 ?e3))) else (modify ?c3 (chosen (+ 1 ?e2))))
+    (assert (diagonal_stop_threat_defeat activated)))
 """,
 """
-(defrule evitar_amenaza_derrota_otra_diagonal
+(defrule other_diagonal_stop_threat_defeat
     (declare (salience 5))
-    ?c1 <- (casilla (coord_x 0) (coord_y 2) (tipo ?x) (elegida ?e1))
-    ?c2 <- (casilla (coord_x 1) (coord_y 1) (tipo ?y) (elegida ?e2))
-    ?c3 <- (casilla (coord_x 2) (coord_y 0) (tipo ?z) (elegida ?e3))
+    ?c1 <- (square (coord_x 0) (coord_y 2) (type ?x) (chosen ?e1))
+    ?c2 <- (square (coord_x 1) (coord_y 1) (type ?y) (chosen ?e2))
+    ?c3 <- (square (coord_x 2) (coord_y 0) (type ?z) (chosen ?e3))
     (test (or (and (= ?x 0) (= ?y 0) (= ?z 1))
               (and (= ?x 0) (= ?y 1) (= ?z 0))
               (and (= ?x 1) (= ?y 0) (= ?z 0))))
-    (not (casilla_elegida ?))
-    (not (amenaza_multiple ?))
-    (not (estudiado_amenaza_usuario ?c1 ?c2 ?c3))
-    (not (estudiado_amenaza_usuario ?c1 ?c3 ?c2))
-    (not (estudiado_amenaza_usuario ?c2 ?c3 ?c1))
-    (not (estudiado_amenaza_usuario ?c2 ?c1 ?c3))
-    (not (estudiado_amenaza_usuario ?c3 ?c2 ?c1))
-    (not (estudiado_amenaza_usuario ?c3 ?c1 ?c2))
+    (not (square_chosen ?))
+    (not (agent_multiple_threats_exist ?))
+    (not (user_threat_studied ?c1 ?c2 ?c3))
+    (not (user_threat_studied ?c1 ?c3 ?c2))
+    (not (user_threat_studied ?c2 ?c3 ?c1))
+    (not (user_threat_studied ?c2 ?c1 ?c3))
+    (not (user_threat_studied ?c3 ?c2 ?c1))
+    (not (user_threat_studied ?c3 ?c1 ?c2))
     =>
-    (assert (estudiado_amenaza_usuario ?c1 ?c2 ?c3))
-    (assert (estudiando_amenazas_derrota sí))
-    (if (= ?x 1) then (modify ?c2 (elegida (+ 2 ?e2))) (modify ?c3 (elegida (+ 1 ?e3))))
-    (if (= ?y 1) then (modify ?c1 (elegida (+ 1 ?e1))) (modify ?c3 (elegida (+ 1 ?e3))))
-    (if (= ?z 1) then (modify ?c1 (elegida (+ 1 ?e1))) (modify ?c2 (elegida (+ 2 ?e2))))
-    (printout t "evitar_amenaza_derrota_otra_diagonal" crlf))
+    (assert (user_threat_studied ?c1 ?c2 ?c3))
+    (assert (user_threat_exists yes))
+    (if (= ?x 1) then (modify ?c2 (chosen (+ 2 ?e2))) (modify ?c3 (chosen (+ 1 ?e3))))
+    (if (= ?y 1) then (modify ?c1 (chosen (+ 1 ?e1))) (modify ?c3 (chosen (+ 1 ?e3))))
+    (if (= ?z 1) then (modify ?c1 (chosen (+ 1 ?e1))) (modify ?c2 (chosen (+ 2 ?e2))))
+    (assert (other_diagonal_stop_threat_defeat activated)))
 """,
 """
-(defrule evitar_amenaza_derrota_horizontal
+(defrule row_stop_threat_defeat
     (declare (salience 5))
-    ?c1 <- (casilla (coord_x ?x) (coord_y ?y1) (tipo 1))
-    ?c2 <- (casilla (coord_x ?x) (coord_y ?y2) (tipo 0) (elegida ?e2))
-    ?c3 <- (casilla (coord_x ?x) (coord_y ?y3) (tipo 0) (elegida ?e3))
+    ?c1 <- (square (coord_x ?x) (coord_y ?y1) (type 1))
+    ?c2 <- (square (coord_x ?x) (coord_y ?y2) (type 0) (chosen ?e2))
+    ?c3 <- (square (coord_x ?x) (coord_y ?y3) (type 0) (chosen ?e3))
     (test (not (= ?y2 ?y3)))
-    (not (casilla_elegida ?))
-    (not (amenaza_multiple ?))
-    (not (estudiado_amenaza_usuario ?c1 ?c2 ?c3))
-    (not (estudiado_amenaza_usuario ?c1 ?c3 ?c2))
+    (not (square_chosen ?))
+    (not (agent_multiple_threats_exist ?))
+    (not (user_threat_studied ?c1 ?c2 ?c3))
+    (not (user_threat_studied ?c1 ?c3 ?c2))
     =>
-    (assert (estudiado_amenaza_usuario ?c1 ?c2 ?c3))
-    (assert (estudiando_amenazas_derrota sí))
-    (modify ?c2 (elegida (+ 1 ?e2)))
-    (modify ?c3 (elegida (+ 1 ?e3)))
-    (printout t "evitar_amenaza_derrota_horizontal" crlf))
+    (assert (user_threat_studied ?c1 ?c2 ?c3))
+    (assert (user_threat_exists yes))
+    (modify ?c2 (chosen (+ 1 ?e2)))
+    (modify ?c3 (chosen (+ 1 ?e3)))
+    (assert (row_stop_threat_defeat activated)))
 """,
 """
-(defrule evitar_amenaza_derrota_vertical
+(defrule column_stop_threat_defeat
     (declare (salience 5))
-    ?c1 <- (casilla (coord_x ?x1) (coord_y ?y) (tipo 1))
-    ?c2 <- (casilla (coord_x ?x2) (coord_y ?y) (tipo 0) (elegida ?e2))
-    ?c3 <- (casilla (coord_x ?x3) (coord_y ?y) (tipo 0) (elegida ?e3))
+    ?c1 <- (square (coord_x ?x1) (coord_y ?y) (type 1))
+    ?c2 <- (square (coord_x ?x2) (coord_y ?y) (type 0) (chosen ?e2))
+    ?c3 <- (square (coord_x ?x3) (coord_y ?y) (type 0) (chosen ?e3))
     (test (not (= ?x2 ?x3)))
-    (not (casilla_elegida ?))
-    (not (amenaza_multiple ?))
-    (not (estudiado_amenaza_usuario ?c1 ?c2 ?c3))
-    (not (estudiado_amenaza_usuario ?c1 ?c3 ?c2))
+    (not (square_chosen ?))
+    (not (agent_multiple_threats_exist ?))
+    (not (user_threat_studied ?c1 ?c2 ?c3))
+    (not (user_threat_studied ?c1 ?c3 ?c2))
     =>
-    (assert (estudiado_amenaza_usuario ?c1 ?c2 ?c3))
-    (assert (estudiando_amenazas_derrota sí))
-    (modify ?c2 (elegida (+ 1 ?e2)))
-    (modify ?c3 (elegida (+ 1 ?e3)))
-    (printout t "evitar_amenaza_derrota_vertical" crlf))
-""",
-"""
-(defrule se_evita_amenaza_multiple
-    (declare (salience 4))
-    (casilla (elegida ?e))
-    (test  (> ?e 1))
-    (not (casilla_elegida ?))
-    (not (amenaza_multiple ?))
-    (not (se_evita_amenaza_multiple ?))
-    (not (centro_cogida ?))
-    (estudiando_amenazas_derrota sí)
-    =>
-    (assert (se_evita_amenaza_multiple sí))
-    (printout t "se_evita_amenaza_multiple" crlf))
+    (assert (user_threat_studied ?c1 ?c2 ?c3))
+    (assert (user_threat_exists yes))
+    (modify ?c2 (chosen (+ 1 ?e2)))
+    (modify ?c3 (chosen (+ 1 ?e3)))
+    (assert (column_stop_threat_defeat activated)))
 """,
 
-# Cualquier casilla libre
+# First round
 
 """
-(defrule cualquier_casilla_libre
+(defrule first_turn
+    (declare (salience 3))
+    (not (square (type 1)))
+    (not (square (type 2)))
+    ?c <- (square (coord_x 1) (coord_y 1))
+    (not (square_chosen ?))
+    (not (agent_multiple_threats_exist ?))
+    (not (user_threat_exists ?))
+    =>
+    (modify ?c (chosen 1))
+    (assert (square_chosen yes))
+    (assert (first_turn activated)))
+""",
+
+# Backup rule
+
+"""
+(defrule any_free_square
     (declare (salience 1))
-    ?c <- (casilla (tipo 0))
-    (not (casilla_elegida ?))
-    (not (amenaza_multiple ?))
-    (not (centro_cogida ?))
-    (not (estudiando_amenazas_derrota ?))
+    ?c <- (square (type 0))
+    (not (square_chosen ?))
+    (not (agent_multiple_threats_exist ?))
+    (not (user_threat_exists ?))
     =>
-    (modify ?c (elegida 1))
-    (assert (casilla_elegida sí))
-    (printout t "cualquier_casilla_libre" crlf))
+    (modify ?c (chosen 1))
+    (assert (square_chosen yes))
+    (assert (any_free_square activated)))
 """
 }
