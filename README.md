@@ -7,19 +7,19 @@
 
 Install the dependencies:
 
-```bash
-pip install numpy, clipspy
+```console
+pip install numpy clipspy
 ```
 
 Run it:
 
-```
+```console
 ./tic_tac_toe.py
 ```
 
 Or with the python command:
 
-```
+```console
 python3 tic_tac_toe.py
 ```
 
